@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090914">
+  <meta name="description" content="Shake Pixels is a retro gaming brand for classic fighting games, platformers, tournaments, livestreams, and the gaming community.">
+  <title>Shake Pixels — Retro Gaming Arena</title>
+  <style>
+    :root {
+      --bg:#090914; --panel:#121225; --panel2:#1a1a33; --text:#f8f7ff;
+      --muted:#aaa9c8; --pink:#ff3e83; --cyan:#51f4d2; --yellow:#ffe66d;
+      --purple:#9a72ff; --line:rgba(255,255,255,.13);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:86px}
+    body{margin:0;background:
+      radial-gradient(ellipse at 12% 0%,rgba(154,114,255,.13),transparent 34rem),
+      radial-gradient(ellipse at 90% 30%,rgba(255,62,131,.09),transparent 34rem),var(--bg);
+      color:var(--text);font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;line-height:1.65}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.13;
+      background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);background-size:28px 28px}
+    a{color:inherit;text-decoration:none}
+    button,input,select,textarea{font:inherit}
+    button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}
+    .container{width:min(1120px,calc(100% - 32px));margin:auto}
+    .topbar{position:sticky;top:0;z-index:20;background:rgba(9,9,20,.92);backdrop-filter:blur(15px);border-bottom:1px solid var(--line)}
+    .nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:1000;letter-spacing:.05em;line-height:1.25}
+    .logo{width:44px;height:44px;display:grid;place-items:center;background:var(--pink);color:#090914;border:3px solid var(--text);box-shadow:4px 4px 0 var(--purple);font-size:22px}
+    .brand small{display:block;color:var(--cyan);font-size:9px;letter-spacing:.13em;margin-top:4px}
+    .nav-links{display:flex;align-items:center;gap:21px;font-size:12px;font-weight:900}
+    .nav-links a:hover{color:var(--cyan)}
+    .nav-toggle{display:none;background:transparent;border:1px solid var(--line);color:var(--text);padding:7px 10px}
+    .btn{display:inline-flex;justify-content:center;align-items:center;gap:8px;padding:12px 16px;border:2px solid var(--text);background:var(--pink);color:#090914;font-weight:1000;font-size:12px;box-shadow:4px 4px 0 var(--purple);cursor:pointer;transition:transform .15s,box-shadow .15s}
+    .btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--purple)}
+    .btn.secondary{background:var(--panel);color:var(--text);box-shadow:4px 4px 0 var(--cyan)}
+    .btn.small{padding:8px 10px;font-size:11px}
+    .hero{padding:70px 0 54px}
+    .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+    .eyebrow{display:inline-flex;gap:9px;align-items:center;padding:6px 10px;border:1px solid rgba(81,244,210,.45);color:var(--cyan);font-size:10px;font-weight:1000;letter-spacing:.1em;background:rgba(81,244,210,.06)}
+    .blink{width:8px;height:8px;background:var(--pink);display:inline-block;box-shadow:0 0 12px var(--pink);animation:blink 1s steps(2,end) infinite}
+    @keyframes blink{50%{opacity:.15}}
+    h1{font-size:clamp(40px,6.5vw,76px);line-height:1.02;letter-spacing:-.07em;margin:22px 0 18px;font-weight:1000}
+    h1 .accent{color:var(--pink);text-shadow:4px 4px 0 #53235d}
+    .hero p,.section-intro{color:var(--muted);font-size:14px;max-width:620px}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:26px}
+    .micro{color:#8585a7;font-size:10px;margin-top:25px}
+    .arcade{min-height:370px;position:relative;display:grid;place-items:center;overflow:hidden;border:2px solid #7770a8;background:linear-gradient(180deg,rgba(154,114,255,.12),transparent),#101020;box-shadow:8px 8px 0 rgba(255,62,131,.65)}
+    .arcade:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 5px,rgba(255,255,255,.035) 6px 7px);pointer-events:none}
+    .arcade:after{content:"";position:absolute;left:0;right:0;bottom:0;height:35%;background:linear-gradient(transparent,rgba(81,244,210,.07));pointer-events:none}
+    .art-content{position:relative;z-index:1;text-align:center;padding:20px}
+    .pixel-art{font-size:clamp(85px,14vw,140px);line-height:1;filter:drop-shadow(5px 5px 0 rgba(255,62,131,.6))}
+    .art-title{font-size:clamp(18px,3vw,25px);font-weight:1000;letter-spacing:.08em;margin-top:25px}
+    .art-sub{font-size:10px;color:var(--cyan);letter-spacing:.2em;font-weight:1000}
+    .float{position:absolute;z-index:2;padding:6px 9px;background:var(--yellow);color:#090914;font-size:10px;font-weight:1000;border:2px solid #090914}
+    .float.one{left:15px;top:17px;transform:rotate(-3deg)}
+    .float.two{right:14px;bottom:17px;background:var(--cyan);transform:rotate(3deg)}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:28px}
+    .stat{border:1px solid var(--line);background:rgba(255,255,255,.025);padding:13px}
+    .stat strong{display:block;font-size:21px;color:var(--yellow)}
+    .stat span{font-size:10px;color:var(--muted)}
+    section{padding:58px 0}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:25px;margin-bottom:25px}
+    .kicker{color:var(--cyan);font-size:10px;font-weight:1000;letter-spacing:.17em;text-transform:uppercase}
+    h2{font-size:clamp(27px,4vw,40px);line-height:1.15;letter-spacing:-.05em;margin:7px 0 0}
+    .section-head p{max-width:500px;margin:0;color:var(--muted);font-size:12px}
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .card{padding:20px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.01));box-shadow:4px 4px 0 rgba(154,114,255,.2)}
+    .card:hover{border-color:rgba(81,244,210,.6)}
+    .card-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+    .game-icon{width:48px;height:48px;display:grid;place-items:center;background:var(--panel2);border:1px solid var(--line);font-size:25px}
+    .tag{font-size:9px;padding:4px 7px;color:var(--cyan);border:1px solid rgba(81,244,210,.3);font-weight:1000}
+    .tag.pink{color:#ff8cb5;border-color:rgba(255,62,131,.35)}
+    h3{font-size:17px;line-height:1.3;margin:0 0 8px}
+    .card p{color:var(--muted);font-size:12px;margin:0 0 15px}
+    .detail{font-size:10px;color:#d8d7ee;margin:7px 0}
+    .card .btn{width:100%;margin-top:13px}
+    .games{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+    .game-tile{padding:17px 10px;text-align:center;background:var(--panel);border:1px solid var(--line)}
+    .game-tile:hover{border-color:var(--pink);transform:translateY(-2px)}
+    .game-tile .emoji{font-size:31px}
+    .game-tile strong{display:block;font-size:11px;margin-top:9px}
+    .game-tile span{color:var(--muted);font-size:9px}
+    .leaderboard-wrap{overflow-x:auto;border:1px solid var(--line);background:var(--panel)}
+    table{width:100%;border-collapse:collapse;min-width:500px;text-align:left;font-size:12px}
+    th{color:var(--cyan);background:#1a1a31;font-size:10px;text-transform:uppercase;letter-spacing:.1em}
+    th,td{padding:14px 16px;border-bottom:1px solid var(--line)}
+    td{color:#deddf2}
+    .rank{color:var(--yellow);font-weight:1000}
+    .empty-note{color:var(--muted);font-size:11px;margin-top:12px}
+    .winner-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .winner{padding:20px;text-align:center;border:1px dashed rgba(255,230,109,.4);background:rgba(255,230,109,.035)}
+    .winner .trophy{font-size:36px}
+    .winner strong{display:block;margin:9px 0 3px}
+    .winner span{font-size:10px;color:var(--muted)}
+    .stream-panel{display:grid;grid-template-columns:1fr auto;align-items:center;gap:25px;padding:28px;border:2px solid var(--pink);background:linear-gradient(105deg,rgba(255,62,131,.11),rgba(154,114,255,.06));box-shadow:6px 6px 0 rgba(81,244,210,.4)}
+    .stream-panel p{color:var(--muted);font-size:12px;margin-bottom:0}
+    .join-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:20px}
+    .panel{padding:23px;border:1px solid var(--line);background:var(--panel)}
+    .panel p{color:var(--muted);font-size:12px}
+    .feature-list{padding:0;list-style:none;color:#deddf2;font-size:12px}
+    .feature-list li{margin:10px 0}
+    .feature-list li:before{content:"▶ ";color:var(--cyan)}
+    label{display:block;margin:12px 0 6px;font-size:11px;font-weight:1000;color:#e4e2f7}
+    input,select,textarea{width:100%;padding:11px 12px;color:var(--text);background:#090914;border:1px solid #383653;border-radius:0;outline:none;font-size:12px}
+    input:focus,select:focus,textarea:focus{border-color:var(--cyan)}
+    textarea{min-height:90px;resize:vertical}
+    .form-note{font-size:10px!important;color:#8988a9!important}
+    .admin{margin-top:25px;border:1px solid var(--line);background:rgba(18,18,37,.7)}
+    .admin summary{padding:15px 18px;cursor:pointer;color:var(--yellow);font-weight:1000;font-size:12px}
+    .admin-inner{padding:0 18px 18px}
+    .admin-warning{color:#ff9bb8;font-size:11px}
+    .admin-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+    .admin-list{display:grid;gap:8px;margin-top:14px}
+    .admin-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;background:#090914;border:1px solid var(--line);font-size:11px}
+    .footer{border-top:1px solid var(--line);padding:25px 0;color:var(--muted);font-size:10px}
+    .footer-row{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}
+    .socials{display:flex;gap:15px;flex-wrap:wrap}
+    .socials a:hover{color:var(--cyan)}
+    .toast{position:fixed;right:18px;bottom:18px;z-index:50;max-width:calc(100% - 36px);padding:13px 16px;background:var(--cyan);color:#090914;font-size:12px;font-weight:1000;box-shadow:4px 4px 0 var(--pink);display:none}
+    @media(max-width:850px){
+      .nav-links{gap:12px}.nav-links a:not(.btn){display:none}
+      .hero-grid,.join-grid{grid-template-columns:1fr}.arcade{min-height:320px}
+      .cards{grid-template-columns:1fr}.games{grid-template-columns:repeat(3,1fr)}
+      .section-head{align-items:start;flex-direction:column}.winner-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:560px){
+      .container{width:calc(100% - 24px)}.nav{min-height:68px}.brand{font-size:12px}.logo{width:38px;height:38px}
+      .nav-links{gap:8px}.nav-links .btn{padding:9px 10px;font-size:10px}.hero{padding-top:45px}
+      .stats{gap:6px}.stat{padding:10px 8px}.stat strong{font-size:17px}.stat span{font-size:9px}
+      .games{grid-template-columns:repeat(2,1fr)}.stream-panel{grid-template-columns:1fr;padding:20px}
+      .admin-item{align-items:flex-start;flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+<header class="topbar">
+  <div class="container nav">
+    <a class="brand" href="#home"><span class="logo">SP</span><span>SHAKE PIXELS<small>PRESS START • PLAY RETRO</small></span></a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#tournaments">Events</a><a href="#games">Games</a><a href="#leaderboard">Rankings</a><a href="#winners">Winners</a>
+      <a class="btn small" href="#register">JOIN THE GAME ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="home">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow"><span class="blink"></span> PLAYER ONE, READY?</span>
+        <h1>PIXEL POWER.<br>REAL <span class="accent">RIVALRIES.</span></h1>
+        <p>Welcome to <strong>Shake Pixels</strong> — a retro gaming brand celebrating classic fighters, arcade legends, and the players who keep them alive. Pick your game, enter the arena, and make your next move count.</p>
+        <div class="hero-actions"><a class="btn" href="#tournaments">VIEW TOURNAMENTS ▶</a><a class="btn secondary" href="https://www.youtube.com/@shakepixels" target="_blank" rel="noopener">▶ WATCH ON YOUTUBE</a></div>
+        <div class="stats"><div class="stat"><strong>INSERT</strong><span>Coin mentality</span></div><div class="stat"><strong>PRESS A</strong><span>Challenge accepted</span></div><div class="stat"><strong>GG!</strong><span>Respect the player</span></div></div>
+        <div class="micro">RETRO GAMES. NEW CHALLENGERS. ENDLESS CONTINUES.</div>
+      </div>
+      <div class="arcade" aria-label="Retro pixel arcade illustration">
+        <span class="float one">PLAYER VS PLAYER</span>
+        <div class="art-content"><div class="pixel-art">🕹️</div><div class="art-title">SHAKE PIXELS</div><div class="art-sub">8-BIT HEART • NEXT-GEN HYPE</div></div>
+        <span class="float two">★ HIGH SCORE ★</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="tournaments">
+    <div class="container">
+      <div class="section-head"><div><div class="kicker">01 / SELECT YOUR EVENT</div><h2>Tournament arena</h2></div><p>Find your next challenge. Event dates and registration details are examples until you replace them with confirmed information.</p></div>
+      <div class="cards" id="tournamentCards">
+        <article class="card"><div class="card-top"><div class="game-icon">🥊</div><span class="tag pink">FIGHTING</span></div><h3>Tekken Showdown</h3><p>Bring your best combos, reads, and clutch finishes to the ring.</p><div class="detail">MODE: 1v1 • FORMAT: TO BE ANNOUNCED</div><div class="detail">DATE: COMING SOON</div><a class="btn secondary" href="#register" data-event="Tekken Showdown">REGISTER INTEREST ↗</a></article>
+        <article class="card"><div class="card-top"><div class="game-icon">⚡</div><span class="tag">FIGHTING</span></div><h3>Street Fighter Clash</h3><p>Classic matchups, clean inputs, and a battle for arcade bragging rights.</p><div class="detail">MODE: 1v1 • FORMAT: TO BE ANNOUNCED</div><div class="detail">DATE: COMING SOON</div><a class="btn secondary" href="#register" data-event="Street Fighter Clash">REGISTER INTEREST ↗</a></article>
+        <article class="card"><div class="card-top"><div class="game-icon">👑</div><span class="tag pink">FIGHTING</span></div><h3>King of Fighters Battle</h3><p>Build your team, master your timing, and fight your way to the top.</p><div class="detail">MODE: TEAM BATTLE • FORMAT: TBA</div><div class="detail">DATE: COMING SOON</div><a class="btn secondary" href="#register" data-event="King of Fighters Battle">REGISTER INTEREST ↗</a></article>
+      </div>
+      <p class="empty-note">Organiser note: confirm the rules, platform, entry fee (if any), event date, and prize details before announcing a tournament.</p>
+    </div>
+  </section>
+
+  <section id="games">
+    <div class="container">
+      <div class="section-head"><div><div class="kicker">02 / GAME SELECT</div><h2>Choose your universe</h2></div><p>Shake Pixels celebrates the classics. The games below represent the community focus and can be expanded as your tournament lineup grows.</p></div>
+      <div class="games">
+        <div class="game-tile"><div class="emoji">🥊</div><strong>TEKKEN</strong><span>Fighting • Combos</span></div>
+        <div class="game-tile"><div class="emoji">⚡</div><strong>STREET FIGHTER</strong><span>Arcade • Versus</span></div>
+        <div class="game-tile"><div class="emoji">🍄</div><strong>MARIO</strong><span>Platform • Speedrun</span></div>
+        <div class="game-tile"><div class="emoji">👑</div><strong>KING OF FIGHTERS</strong><span>Team fighting</span></div>
+        <div class="game-tile"><div class="emoji">👾</div><strong>MORE CLASSICS</strong><span>Suggest a game</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="leaderboard">
+    <div class="container">
+      <div class="section-head"><div><div class="kicker">03 / TOP PLAYERS</div><h2>Player leaderboard</h2></div><p>Showcase tournament standings here. These sample entries are placeholders, not actual results. Use the admin tools below to edit the table in this browser.</p></div>
+      <div class="leaderboard-wrap"><table><thead><tr><th>Rank</th><th>Player</th><th>Game</th><th>Points</th></tr></thead><tbody id="leaderboardBody">
+        <tr><td class="rank">#01</td><td>Player One</td><td>Tekken</td><td>0</td></tr>
+        <tr><td class="rank">#02</td><td>Player Two</td><td>Street Fighter</td><td>0</td></tr>
+        <tr><td class="rank">#03</td><td>Player Three</td><td>King of Fighters</td><td>0</td></tr>
+      </tbody></table></div>
+      <p class="empty-note">Leaderboard changes made with the local admin panel are saved only in this browser. They are not shared with visitors.</p>
+    </div>
+  </section>
+
+  <section id="winners">
+    <div class="container">
+      <div class="section-head"><div><div class="kicker">04 / HALL OF FAME</div><h2>Winners gallery</h2></div><p>Celebrate champions, finalist moments, and event highlights. Replace these slots with real winners and photos after your tournaments.</p></div>
+      <div class="winner-grid">
+        <div class="winner"><div class="trophy">🏆</div><strong>CHAMPION SLOT 01</strong><span>Winner name • Game • Event date</span></div>
+        <div class="winner"><div class="trophy">🥈</div><strong>RUNNER-UP SLOT</strong><span>Player name • Game • Event date</span></div>
+        <div class="winner"><div class="trophy">🎮</div><strong>MOMENT OF THE MATCH</strong><span>Add a screenshot or highlight link</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="streams">
+    <div class="container">
+      <div class="stream-panel"><div><div class="kicker">05 / WATCH • SUBSCRIBE • PLAY</div><h2>Catch the action on Shake Pixels</h2><p>Visit the YouTube channel for gaming videos, livestreams, match highlights, and community updates.</p></div><a class="btn" href="https://www.youtube.com/@shakepixels" target="_blank" rel="noopener">OPEN YOUTUBE ▶</a></div>
+    </div>
+  </section>
+
+  <section id="register">
+    <div class="container">
+      <div class="section-head"><div><div class="kicker">06 / PLAYER REGISTRATION</div><h2>Enter your player details</h2></div><p>Send your interest to the organiser. This static site prepares an email draft; it does not transmit or store registration data by itself.</p></div>
+      <div class="join-grid">
+        <div class="panel"><h3>READY PLAYER ONE?</h3><p>Join the Shake Pixels community and let us know which tournaments you'd like to enter.</p><ul class="feature-list"><li>Choose your game</li><li>Tell us your player name</li><li>Get in touch about upcoming events</li><li>Follow YouTube for stream announcements</li></ul><a class="btn secondary" href="https://www.youtube.com/@shakepixels" target="_blank" rel="noopener">SUBSCRIBE ON YOUTUBE ↗</a></div>
+        <div class="panel">
+          <form id="registrationForm">
+            <label for="playerName">PLAYER / GAMERTAG *</label><input id="playerName" name="playerName" required maxlength="60" placeholder="Enter your gaming name">
+            <label for="playerEmail">EMAIL ADDRESS *</label><input id="playerEmail" name="playerEmail" type="email" required placeholder="you@example.com">
+            <label for="gameChoice">GAME *</label><select id="gameChoice" name="gameChoice" required><option value="">Choose your game</option><option>Tekken</option><option>Street Fighter</option><option>Mario</option><option>King of Fighters</option><option>Other retro game</option></select>
+            <label for="eventChoice">TOURNAMENT *</label><select id="eventChoice" name="eventChoice" required><option value="">Choose an event</option><option>Tekken Showdown</option><option>Street Fighter Clash</option><option>King of Fighters Battle</option><option>Future tournament / not sure yet</option></select>
+            <label for="playerMessage">MESSAGE (OPTIONAL)</label><textarea id="playerMessage" name="playerMessage" maxlength="1000" placeholder="Platform, region, questions, etc."></textarea>
+            <button class="btn" style="width:100%;margin-top:16px" type="submit">PREPARE EMAIL REGISTRATION ↗</button>
+            <p class="form-note">Your email app should open with the details filled in. Replace the organiser email in the script before using registration publicly.</p>
+          </form>
+        </div>
+      </div>
+
+      <details class="admin" id="admin">
+        <summary>ORGANISER TOOLS — LOCAL DEMO PANEL ▾</summary>
+        <div class="admin-inner">
+          <p class="admin-warning">DEMO ONLY: this panel has no secure login and saves changes only in the current browser using localStorage. It is not a real multi-user admin system. Do not enter passwords or sensitive data here.</p>
+          <h3>Update leaderboard</h3>
+          <form id="leaderboardForm">
+            <label for="adminPlayer">Player name</label><input id="adminPlayer" required maxlength="60" placeholder="Player name">
+            <label for="adminGame">Game</label><select id="adminGame"><option>Tekken</option><option>Street Fighter</option><option>Mario</option><option>King of Fighters</option><option>Other retro game</option></select>
+            <label for="adminPoints">Points</label><input id="adminPoints" type="number" min="0" max="999999" value="0" required>
+            <div class="admin-actions"><button class="btn small" type="submit">ADD / UPDATE PLAYER</button><button class="btn small secondary" id="resetLeaderboard" type="button">RESET SAMPLE DATA</button></div>
+          </form>
+          <div class="admin-list" id="adminPlayerList"></div>
+          <p class="form-note">To manage events and rankings across all visitors, connect a backend or database with proper authentication. GitHub Pages alone cannot securely save shared data.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-row">
+    <span>© <span id="year"></span> SHAKE PIXELS • KEEP THE CLASSICS ALIVE.</span>
+    <div class="socials"><a href="https://www.youtube.com/@shakepixels" target="_blank" rel="noopener">YOUTUBE ↗</a><a href="#tournaments">TOURNAMENTS</a><a href="#home">BACK TO TOP ↑</a></div>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  // IMPORTANT: Replace this with a real email address monitored by Shake Pixels.
+  const ORGANISER_EMAIL = 'YOUR-EMAIL@example.com';
+  const YOUTUBE_URL = 'https://www.youtube.com/@shakepixels';
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  function toast(message) {
+    const el = document.getElementById('toast');
+    el.textContent = message;
+    el.style.display = 'block';
+    clearTimeout(toast.timer);
+    toast.timer = setTimeout(() => { el.style.display = 'none'; }, 4500);
+  }
+
+  // Tournament cards preselect the matching event in the registration form.
+  document.querySelectorAll('[data-event]').forEach(link => {
+    link.addEventListener('click', () => {
+      const select = document.getElementById('eventChoice');
+      if (select) select.value = link.dataset.event;
+    });
+  });
+
+  document.getElementById('registrationForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const name = String(data.get('playerName') || '').trim();
+    const email = String(data.get('playerEmail') || '').trim();
+    const game = String(data.get('gameChoice') || '');
+    const tournament = String(data.get('eventChoice') || '');
+    const message = String(data.get('playerMessage') || '').trim();
+
+    if (ORGANISER_EMAIL === 'YOUR-EMAIL@example.com') {
+      toast('Demo is working. Organiser: replace YOUR-EMAIL@example.com in index.html with your real email.');
+      return;
+    }
+    const subject = encodeURIComponent('Shake Pixels registration interest — ' + tournament);
+    const body = encodeURIComponent(
+      'Shake Pixels tournament registration interest\n\nPlayer: ' + name +
+      '\nPlayer email: ' + email + '\nGame: ' + game + '\nTournament: ' + tournament +
+      '\nMessage: ' + (message || 'None') + '\n\nYouTube: ' + YOUTUBE_URL
+    );
+    window.location.href = 'mailto:' + ORGANISER_EMAIL + '?subject=' + subject + '&body=' + body;
+  });
+
+  const SAMPLE_PLAYERS = [
+    {name:'Player One', game:'Tekken', points:0},
+    {name:'Player Two', game:'Street Fighter', points:0},
+    {name:'Player Three', game:'King of Fighters', points:0}
+  ];
+  const STORAGE_KEY = 'shakePixelsDemoLeaderboard';
+  let players = loadPlayers();
+
+  function loadPlayers() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch (error) {}
+    return SAMPLE_PLAYERS.map(player => ({...player}));
+  }
+
+  function savePlayers() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(players));
+    } catch (error) {
+      toast('Could not save in this browser. Please check browser storage settings.');
+    }
+  }
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+      '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+    })[char]);
+  }
+
+  function renderLeaderboard() {
+    players.sort((a,b) => Number(b.points) - Number(a.points));
+    const body = document.getElementById('leaderboardBody');
+    body.innerHTML = players.length ? players.map((player, index) =>
+      '<tr><td class="rank">#' + String(index + 1).padStart(2,'0') + '</td><td>' +
+      escapeHTML(player.name) + '</td><td>' + escapeHTML(player.game) + '</td><td>' +
+      escapeHTML(player.points) + '</td></tr>'
+    ).join('') : '<tr><td colspan="4">No players added yet.</td></tr>';
+    const list = document.getElementById('adminPlayerList');
+    list.innerHTML = players.map((player, index) =>
+      '<div class="admin-item"><span>' + (index + 1) + '. ' + escapeHTML(player.name) +
+      ' — ' + escapeHTML(player.game) + ' — ' + escapeHTML(player.points) +
+      ' pts</span><button type="button" class="btn small secondary" data-remove="' +
+      index + '">REMOVE</button></div>'
+    ).join('');
+    list.querySelectorAll('[data-remove]').forEach(button => {
+      button.addEventListener('click', () => {
+        players.splice(Number(button.dataset.remove), 1);
+        savePlayers();
+        renderLeaderboard();
+        toast('Player removed in this browser.');
+      });
+    });
+  }
+
+  document.getElementById('leaderboardForm').addEventListener('submit', event => {
+    event.preventDefault();
+    const name = document.getElementById('adminPlayer').value.trim();
+    const game = document.getElementById('adminGame').value;
+    const points = Number(document.getElementById('adminPoints').value);
+    const existing = players.findIndex(player => player.name.toLowerCase() === name.toLowerCase() && player.game === game);
+    if (existing >= 0) players[existing].points = points;
+    else players.push({name, game, points});
+    savePlayers();
+    renderLeaderboard();
+    event.currentTarget.reset();
+    document.getElementById('adminPoints').value = '0';
+    toast('Leaderboard updated in this browser only.');
+  });
+
+  document.getElementById('resetLeaderboard').addEventListener('click', () => {
+    players = SAMPLE_PLAYERS.map(player => ({...player}));
+    savePlayers();
+    renderLeaderboard();
+    toast('Sample leaderboard restored.');
+  });
+
+  renderLeaderboard();
+</script>
+</body>
+</html>
